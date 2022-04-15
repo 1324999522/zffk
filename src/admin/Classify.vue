@@ -13,7 +13,7 @@
           >搜索</el-button
         >
         <el-button type="primary" icon="Plus" @click="adminPage.handleCreate()"
-          >新建</el-button
+          >新建10</el-button
         >
         <!-- <el-button type="danger" icon='Delete' @click="handleDeleteMany()">删除</el-button> -->
       </div>
