@@ -13,7 +13,7 @@
           >搜索</el-button
         >
         <el-button type="primary" icon="Plus" @click="adminPage.handleCreate()"
-          >新建10</el-button
+          >新建</el-button
         >
         <!-- <el-button type="danger" icon='Delete' @click="handleDeleteMany()">删除</el-button> -->
       </div>
@@ -50,7 +50,7 @@
             </el-button>
             <el-popconfirm
               title="Are you sure to delete this?"
-              @confirm="adminFuc.handleDelete(scope.$index, scope.row)"
+              @confirm="baseCurd.handleDelete(scope.$index, scope.row)"
             >
               <template #reference>
                 <el-button size="mini" type="danger" icon="Delete"
@@ -62,7 +62,7 @@
         </el-table-column>
       </el-table>
 
-      <Pagination :getPage="adminFuc.getPage"> </Pagination>
+      <Pagination :getPage="baseCurd.getPage"> </Pagination>
     </el-card>
 
     <!-- 新建与编辑dialog -->
@@ -84,7 +84,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="adminPage.dialogVisible = false">Cancel</el-button>
-          <el-button type="primary" @click="adminFuc.create()"
+          <el-button type="primary" @click="baseCurd.create()"
             >Confirm</el-button
           >
         </span>
@@ -99,14 +99,14 @@ import { get_baseApi } from '@/network/baseApi.js'
 export default {
   data () {
     const adminPage = this.$store.state.adminPage
-    const adminFuc = adminPage.curd(get_baseApi('classify'))
+    const baseCurd = adminPage.curd(get_baseApi('classify'))
     return {
       adminPage: adminPage,
-      adminFuc: adminFuc
+      baseCurd: baseCurd
     }
   },
   async created () {
-    this.adminFuc.getPage()
+    this.baseCurd.getPage()
   },
   methods: {
 

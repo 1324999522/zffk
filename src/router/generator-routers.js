@@ -49,11 +49,19 @@ const routes_data = [
         parentId: 20
     },
     {
-        component: "/test",
+        component: "/Goods",
         id: 220,
         meta: { title: '商品列表', icon: 'Menu', show: true },
         name: "role",
-        path: "/admin/test2",
+        path: "/admin/goods",
+        parentId: 20
+    },
+    {
+        component: "/CardAdd",
+        id: 230,
+        meta: { title: '添加卡密', icon: 'Menu', show: true },
+        name: "rol2e",
+        path: "/admin/cardAdd",
         parentId: 20
     },
     {

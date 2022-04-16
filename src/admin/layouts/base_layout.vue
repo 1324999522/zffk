@@ -77,9 +77,9 @@ export default {
   created () {
 
   },
-  beforeRouteUpdate (to, form, next) {
-    next()
+  beforeRouteUpdate (to, form) {
     this.$refs.Tabs.create_tab(to);
+    this.$store.state.adminPage.change()
   },
 }
 </script>

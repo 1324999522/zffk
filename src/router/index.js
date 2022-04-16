@@ -25,7 +25,7 @@ const routes = [
     component: function () {
       return import('@/admin/layouts/base_layout.vue')
     },
-    children: routers[0].children
+    children: routers[0].children,
   },
 ]
 
@@ -34,6 +34,17 @@ const router = createRouter({
   routes
 })
 
+// router.beforeEach((to, from) => {
+//   console.log(to)
+//   // ...
+//   // 返回 false 以取消导航
+
+// })
+
 router.menuNav = menuNav[0].children
 router.routes_data = routes_data
+
+
+
+
 export default router
