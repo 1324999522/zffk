@@ -370,7 +370,7 @@
   }
 
  html,body,#app{
-   max-width: 1920px;
+   /* max-width: 1920px; */
    height: 100%;
    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
  }
@@ -383,17 +383,6 @@
 .el-table .el-table__cell {
   text-align: center !important;
 }
-
-.top {
-  display: flex;
-  margin-bottom: 15px;
-  
-}
-.top .el-input {
-  width: 220px;
-  margin-right: 15px;
-}
-
 .el-tabs__item{
   display: flex;
   align-items: center;

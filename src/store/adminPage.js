@@ -1,7 +1,3 @@
-
-
-
-
 const data = function () {
   return {
     count: 10,
@@ -25,6 +21,7 @@ const adminPage = {
     this.row = {}
   },
   handleEdit (index, row) {
+    console.log(row)
     this.isEdit = true
     this.dialogVisible = true
     this.row = row
@@ -47,24 +44,21 @@ const adminPage = {
         if (adminPage.isEdit) { this.update(); return }
         let { data } = await $post(adminPage.row)
         adminPage.row = data
+        adminPage.row.id = undefined
         this.getPage()
       },
       async update () {
+        console.log( adminPage.row )
         let { data } = await $put(adminPage.row)
         this.getPage()
       },
     }
   },
   change () {
-    this.count = 10
-    this.limit = 10
-    this.offset = 1
-    this.searchKey = ''
-    this.isEdit = false
-    this.dialogVisible = false
-    this.row = {}
-    this.rows = []
-    this.where = {}
+    const Data = data()
+    for(let key in  Data){
+      this[key] =  Data[key]
+    }
   }
 }
 

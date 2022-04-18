@@ -2,27 +2,12 @@
   <el-container>
     <el-aside width="230px" id="aside">
       <div class="aside_title">
-        <img
-          src="http://img.mp.itc.cn/upload/20170808/5861bc790e654d56bc9289c567b44875_th.jpg"
-          alt=""
-        />
+        <img src="http://img.mp.itc.cn/upload/20170808/5861bc790e654d56bc9289c567b44875_th.jpg" alt="" />
         <div class="aside_title_text">后台管理系统</div>
       </div>
-      <el-menu
-        router
-        :default-active="$route.path"
-        class="el-menu-vertical-demo"
-        :collapse="isCollapse"
-        background-color="#1e222d"
-        text-color="hsla(0,0%,100%,.9)"
-        active-text-color="#fff"
-      >
+      <el-menu router :default-active="$route.path" class="el-menu-vertical-demo" :collapse="isCollapse" background-color="#1e222d" text-color="hsla(0,0%,100%,.9)" active-text-color="#fff">
         <!-- 一级菜单 -->
-        <el-sub-menu
-          v-for="(submenu, index) in $router.menuNav"
-          :key="index"
-          :index="String(index)"
-        >
+        <el-sub-menu v-for="(submenu, index) in $router.adminRoutes" :key="index" :index="String(index)">
           <!-- 一级菜单标题和icon -->
           <template #title>
             <el-icon>
@@ -31,12 +16,7 @@
             <span>{{ submenu.meta.title }}</span>
           </template>
           <!-- 二级菜单 -->
-          <el-menu-item
-            v-for="(children, index) in submenu.children"
-            :key="index"
-            :index="children.path"
-            icon="Edit"
-          >
+          <el-menu-item v-for="(children, index) in submenu.children" :key="index" :index="children.path" icon="Edit">
             <!-- 二级菜单标题和icon -->
             <el-icon :size="20">
               <component :is="children.meta.icon"></component>
@@ -78,8 +58,8 @@ export default {
 
   },
   beforeRouteUpdate (to, form) {
-    this.$refs.Tabs.create_tab(to);
     this.$store.state.adminPage.change()
+    this.$refs.Tabs.create_tab(to);
   },
 }
 </script>

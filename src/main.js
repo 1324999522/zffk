@@ -11,8 +11,7 @@ const app = createApp(App)
 
 
 import register from './components'
-register(app)
-
+app.use(register)
 
 app.use(ElementPlus, { locale })
 app.use(router)

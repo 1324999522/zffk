@@ -1,28 +1,28 @@
 <template>
-  <el-select v-model="value" placeholder="Select" size="large">
-    <el-option
-      v-for="item in dataArray"
-      :key="item.id"
-      :label="item.name"
-      :value="item.id"
-    />
+  <el-select v-model="modelValue" placeholder="Select" size="large" @change="change">
+    <el-option v-for="item in dataArray" :key="item.id" :label="item.name" :value="item.id" />
   </el-select>
 </template>
 
 <script>
-import { ref, watch } from "vue";
 export default {
   props: {
-    value: Number,
     dataArray: Array,
+    modelValue: Number,
   },
   data () {
-    return {}
+    return {
+      value: null
+    }
   },
   created () {
 
   },
   methods: {
+    change (val) {
+      this.$emit('update:modelValue', val)
+      this.$emit('change', val)
+    },
 
   }
 }

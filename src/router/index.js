@@ -1,37 +1,17 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../views/Home.vue'
 
-import generatorDynamicRouter from './generator-routers.js'
+import createAdminRouters from './createAdminRouters.js'
+const adminRoutes = createAdminRouters()
 
-const { menuNav, childrenNav, routers, routes_data } = generatorDynamicRouter()
 
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-    redirect: '/admin/classify'
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: function () {
-      return import('../views/About.vue')
-    }
-  },
-  {
-    path: '/admin',
-    name: 'Admin',
-    component: function () {
-      return import('@/admin/layouts/base_layout.vue')
-    },
-    children: routers[0].children,
-  },
-]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes: [
+    { path: '/', name: 'Home', component: () => import('@/views/Home.vue'), redirect: '/admin/classify' },
+    { path: '/about', name: 'About', component: () => import('@/views/About.vue') },
+    { path: '/admin', name: 'Admin', component: () => import('@/admin/layouts/base_layout.vue'), redirect: '/admin/classify', children: adminRoutes, },
+  ]
 })
 
 // router.beforeEach((to, from) => {
@@ -41,10 +21,7 @@ const router = createRouter({
 
 // })
 
-router.menuNav = menuNav[0].children
-router.routes_data = routes_data
-
-
+router.adminRoutes = adminRoutes
 
 
 export default router
