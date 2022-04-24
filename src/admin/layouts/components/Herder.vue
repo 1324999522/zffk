@@ -1,39 +1,38 @@
 <template>
-  <div class='herder_left'>
+  <div class="herder_left">
     <a href="javascript:;">
-      <div class='herder_icon'>
-        <el-icon :size='18'>
+      <div class="herder_icon">
+        <el-icon :size="18">
           <fold />
         </el-icon>
       </div>
     </a>
     <a href="javascript:;">
-      <div class='herder_icon'>
-        <el-icon :size='18'>
+      <div class="herder_icon">
+        <el-icon :size="18">
           <refresh-right />
         </el-icon>
       </div>
     </a>
-    <div class='herder_left_item'>
+    <div class="herder_left_item">
       <el-breadcrumb>
         <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
         <!-- <el-breadcrumb-item>{{find_p_route($route.path)}}</el-breadcrumb-item> -->
         <el-breadcrumb-item>{{ $route.meta.title }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-
   </div>
-  <div class='herder_right'>
+  <div class="herder_right">
     <a href="javascript:;">
-      <div class='herder_icon'>
-        <el-icon :size='18'>
+      <div class="herder_icon">
+        <el-icon :size="18">
           <full-screen />
         </el-icon>
       </div>
     </a>
     <a href="javascript:;">
-      <div class='herder_icon'>
-        <el-icon :size='18'>
+      <div class="herder_icon">
+        <el-icon :size="18">
           <bell />
         </el-icon>
       </div>
@@ -41,8 +40,8 @@
 
     <el-dropdown>
       <a href="javascript:;">
-        <div class='username_box'>
-          <img src="http://img.mp.itc.cn/upload/20170808/5861bc790e654d56bc9289c567b44875_th.jpg" alt="">
+        <div class="username_box">
+          <img src="http://img.mp.itc.cn/upload/20170808/5861bc790e654d56bc9289c567b44875_th.jpg" alt="" />
           <span class="el-dropdown-link">
             admin
             <el-icon class="el-icon--right">
@@ -53,14 +52,12 @@
       </a>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item icon='User'>个人中心</el-dropdown-item>
-          <el-dropdown-item icon='Lock'>修改密码</el-dropdown-item>
-          <el-dropdown-item icon='SwitchButton' divided>退出登录</el-dropdown-item>
+          <el-dropdown-item icon="User">个人中心</el-dropdown-item>
+          <el-dropdown-item icon="Lock">修改密码</el-dropdown-item>
+          <el-dropdown-item icon="SwitchButton" divided>退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </template>
-
     </el-dropdown>
-
   </div>
 </template>
 
@@ -68,20 +65,9 @@
 
 export default {
   name: 'herder',
-  components: {
-
-  },
-  data() {
-    return {
-
-    }
-  },
-  created() {
-
-  },
   methods: {
     // find 上一级路由
-    find_p_route(path) {
+    find_p_route (path) {
       let routes = this.$router.routes_data
       let route = routes.filter(route => route.path == path)[0]
       let p_route = routes.filter(item => item.id == route.parentId)[0]

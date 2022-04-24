@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="modelValue" placeholder="Select" size="large" @change="change">
+  <el-select v-model="modelValue" placeholder="Select"  @change="change">
     <el-option v-for="item in dataArray" :key="item.id" :label="item.name" :value="item.id" />
   </el-select>
 </template>
@@ -16,7 +16,7 @@ export default {
     }
   },
   created () {
-
+    
   },
   methods: {
     change (val) {

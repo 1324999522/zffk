@@ -1,21 +1,20 @@
 <template>
   <div id="classify_list">
     <el-card>
-      <AdminTopOper :adminPage="adminPage"> </AdminTopOper>
-
+      <AdminTopOper></AdminTopOper>
       <!-- 表格主体 -->
       <el-table :data="adminPage.rows">
         <el-table-column prop="id" label="编号" width="80" />
         <el-table-column prop="name" label="分类名称" width="220" />
         <AdminTableTagSwitch> </AdminTableTagSwitch>
         <el-table-column prop="createdAt" label="创建时间" width="220" />
-        <AdminTableButton :adminPage="adminPage"> </AdminTableButton>
+        <AdminTableButton :baseCurd="baseCurd"> </AdminTableButton>
       </el-table>
 
-      <AdminPagination :adminPage="adminPage"> </AdminPagination>
+      <AdminPagination :getPage="baseCurd.getPage"> </AdminPagination>
     </el-card>
 
-    <AdminDialog @Confirm="adminPage.create()" :show="adminPage.dialogVisible" :key="adminPage.row.id || new Date()" @cancel="adminPage.dialogVisible = false">
+    <AdminDialog @Confirm="baseCurd.create()">
       <template #form>
         <el-form-item label="分类名称">
           <el-input v-model="adminPage.row.name"></el-input>
@@ -31,13 +30,23 @@
   </div>
 </template>
 
-<script setup >
-import { ref, onMounted, reactive } from 'vue'
-import Api from '@/network'
+<script >
+import Api from '@/network/index.js'
 
-const adminPage = reactive(Api.adminPage('classify'))
-onMounted(adminPage.getPage())
-
+export default {
+  data () {
+    const adminPage = this.$store.state.adminPage
+    const baseCurd = adminPage.curd(Api.get_baseApi('order'))
+    return {
+      adminPage: adminPage,
+      baseCurd: baseCurd,
+    }
+  },
+  async created () {
+    this.baseCurd.getPage()
+  },
+}
 </script>
 
-
+<style lang="less" >
+</style>

@@ -8,14 +8,15 @@ const constantRouterComponents = {
 
 const routerMap = [
     { title: '系统管理', component: "BlankLayout", id: 10, icon: 'Menu', name: "system", parentId: 0, },
-    { title: '测试111', component: "/test", id: 110, title: '测试', icon: 'Menu', name: "rol5e", path: "/admin/test", parentId: 10 },
+    { title: '测试111', component: "/test", id: 110, title: '测试', icon: 'Menu', name: "test", parentId: 10 },
     { title: '商品管理', component: "BlankLayout", id: 20, icon: 'Menu', name: "goodAdmin", parentId: 0, },
     { title: '分类列表', component: "/Classify", id: 210, icon: 'UserFilled', name: "classify", parentId: 20 },
     { title: '商品列表', component: "/Goods", id: 220, icon: 'Menu', name: "good", parentId: 20 },
     { title: '添加卡密', component: "/CardAdd", id: 230, icon: 'Menu', name: "cardAdd", parentId: 20 },
-    { title: '卡密管理', component: "/Card", id: 240, icon: 'Menu', name: "Card", path: "/admin/Card", parentId: 20 },
+    { title: '订单管理', component: "/Order", id: 240, icon: 'Menu', name: "order", parentId: 20 },
+    { title: '卡密管理', component: "/Card", id: 240, icon: 'Menu', name: "Card", parentId: 20 },
     { title: '订单列表', component: "/order/order_list", id: 310, icon: 'Document', name: "order_list", parentId: 30 },
-    { title: '测试311', component: "/test", id: 320, icon: 'Menu', name: "role4", path: "/admin/test3555", parentId: 30 },
+    { title: '测试311', component: "/test", id: 320, icon: 'Menu', name: "role4", parentId: 30 },
     { title: '服务管理', component: "BlankLayout", id: 40, icon: 'Document', name: "system2", parentId: 0, },
     { title: '服务项目', component: "/service/service_list", id: 410, icon: 'Menu', name: "service_list", parentId: 40 },
     { title: '服务分类', component: "/test", id: 420, icon: 'Menu', name: "role3", parentId: 40 },

@@ -1,8 +1,10 @@
 <template>
-  <router-view />
+
+    <router-view />
+
 </template>
 
 <style lang="less">
-@import "./assets/css/variable.css";
-@import "./assets/css/clean.css";
+@import './assets/css/variable.css';
+@import './assets/css/clean.css';
 </style>

@@ -5,7 +5,7 @@
         <img src="http://img.mp.itc.cn/upload/20170808/5861bc790e654d56bc9289c567b44875_th.jpg" alt="" />
         <div class="aside_title_text">后台管理系统</div>
       </div>
-      <el-menu router :default-active="$route.path" class="el-menu-vertical-demo" :collapse="isCollapse" background-color="#1e222d" text-color="hsla(0,0%,100%,.9)" active-text-color="#fff">
+      <el-menu router :default-active="$route.path" :collapse="isCollapse" background-color="#1e222d" text-color="hsla(0,0%,100%,.9)" active-text-color="#fff">
         <!-- 一级菜单 -->
         <el-sub-menu v-for="(submenu, index) in $router.adminRoutes" :key="index" :index="String(index)">
           <!-- 一级菜单标题和icon -->
@@ -34,7 +34,9 @@
       </el-header>
       <Tabs ref="Tabs"> </Tabs>
       <el-main>
-        <router-view />
+        <el-config-provider size="large">
+          <router-view  />
+        </el-config-provider>
       </el-main>
       <el-footer>Footer</el-footer>
     </el-container>
@@ -65,14 +67,8 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../assets/css/admin/tabs.less';
-
 .el-container {
   min-height: 100%;
-}
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 230px;
-  min-height: 400px;
 }
 
 #aside {

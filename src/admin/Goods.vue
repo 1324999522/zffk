@@ -1,7 +1,7 @@
 <template>
   <div id="classify_list">
     <el-card>
-      <AdminTopOper> </AdminTopOper>
+      <AdminTopOper :adminPage="adminPage"> </AdminTopOper>
       <!-- 表格主体 -->
       <el-table :data="adminPage.rows">
         <el-table-column prop="id" label="编号" width="80" />
@@ -9,24 +9,27 @@
         <el-table-column prop="classifyName" label="商品分类" width="120" />
         <AdminTableTagSwitch> </AdminTableTagSwitch>
         <el-table-column prop="cards_count" label="卡密数量" width="120" />
-        <el-table-column prop="createdAt" label="创建时间" width="200" />
-        <AdminTableButton :baseCurd="baseCurd">
+        <el-table-column prop="createdAt" label="创建时间" width="220" />
+        <AdminTableButton :adminPage="adminPage"></AdminTableButton>
+        <el-table-column label="卡密操作" width="300">
           <template #default="scope">
-            <el-button icon="Plus" @click="handleAddCard(scope.row)">添加卡密</el-button>
+            <span class="AdminTableButton">
+              <el-button @click="handleAddCard(scope.row)">添加</el-button>
+              <el-button @click="adminPage.handleEdit(scope.$index, scope.row)">提取</el-button>
+              <el-button @click="adminPage.handleEdit(scope.$index, scope.row)">管理</el-button>
+            </span>
           </template>
-        </AdminTableButton>
+        </el-table-column>
       </el-table>
-
-      <Pagination :getPage="baseCurd.getPage"> </Pagination>
+      <AdminPagination :adminPage="adminPage"> </AdminPagination>
     </el-card>
-
-    <AdminDialog :baseCurd="baseCurd">
+    <AdminDialog @Confirm="adminPage.create()" :show="adminPage.dialogVisible" :key="adminPage.row.id || new Date()" @cancel="adminPage.dialogVisible = false">
       <template #form>
         <el-form-item label="商品名称">
           <el-input v-model="adminPage.row.name"></el-input>
         </el-form-item>
         <el-form-item label="商品分类">
-          <MySelect v-model="adminPage.row.classifyId" :dataArray="classifys"> </MySelect>
+          <AdminSelectClassify v-model="adminPage.row.classifyId"> </AdminSelectClassify>
         </el-form-item>
         <el-form-item label="排序">
           <el-input v-model="adminPage.row.sort"></el-input>
@@ -36,34 +39,11 @@
   </div>
 </template>
 
-<script >
-import { get_baseApi } from '@/network/baseApi.js'
-const { $get_page: Classify_$get_page } = get_baseApi('classify')
-export default {
-  data () {
-    const adminPage = this.$store.state.adminPage
-    const baseCurd = adminPage.curd(get_baseApi('good'))
-    return {
-      adminPage: adminPage,
-      baseCurd: baseCurd,
-      classifys: [],
-    }
-  },
-  async created () {
-    this.baseCurd.getPage()
-    let { data } = await Classify_$get_page()
-    this.classifys = data.rows
-  },
-  methods: {
-    handleAddCard (good) {
-      this.$router.push({
-        name: 'cardAdd',
-        params: good
-      })
-    },
-  }
-}
+<script setup >
+import { ref, onMounted, reactive } from 'vue'
+import Api from '@/network'
+
+const adminPage = reactive(Api.adminPage('good'))
+onMounted(adminPage.getPage())
 </script>
 
-<style lang="less" >
-</style>

@@ -1,37 +1,28 @@
 
 <template>
   <!-- 新建与编辑dialog -->
-  <el-dialog v-model="adminPage.dialogVisible" title="新建" width="400px">
-    <el-form ref="form" :model="adminPage.row" label-width="100px" size="medium">
+  <el-dialog v-model="show" title="新建" width="400px">
+    <el-form ref="form" label-width="100px" size="default">
       <slot name="form"> </slot>
     </el-form>
 
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="adminPage.dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="baseCurd.create()">Confirm</el-button>
+        <el-button @click="cancel">Cancel</el-button>
+        <el-button type="primary" @click="confirm">Confirm</el-button>
       </span>
     </template>
   </el-dialog>
 </template>
 
-<script>
-import { get_baseApi } from '@/network/baseApi.js'
-export default {
-  props: {
-    baseCurd: Object
-  },
-  data () {
-    const adminPage = this.$store.state.adminPage
-    return {
-      adminPage: adminPage,
-    }
-  },
-  created () {
 
-  },
-  methods: {
-
-  }
-}
+<script setup >
+const props = defineProps({ show: Boolean })
+const $emit = defineEmits(['confirm', 'cancel'])
+const confirm = () => $emit('confirm')
+const cancel = () => $emit('cancel')
 </script>
+
+
+
+

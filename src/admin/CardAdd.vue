@@ -1,8 +1,8 @@
 <template>
   <el-card class="cardAdd">
-    <MySelect v-model="form.classifyId" :dataArray="classifys" @change="change_classify"> </MySelect>
+    <AdminSelectClassify v-model="form.classifyId" @change="change_classify"> </AdminSelectClassify>
 
-    <MySelect v-model="form.goodId" :dataArray="goods"> </MySelect>
+    <AdminSelectGood v-model="form.goodId" ref="AdminSelectGood"> </AdminSelectGood>
 
     <el-input v-model="form.cards" :rows="15" type="textarea" placeholder="Please input" />
 
@@ -18,15 +18,10 @@ export default {
   name: 'cardAdd',
   data () {
     return {
-      classifys: [],
-      goods: [],
       form: {}
     }
   },
   async created () {
-    let { data } = await Classify_$get_page()
-    this.classifys = data.rows
-
     if (!this.$route.params.id) return
     this.change_classify(this.$route.params.classifyId)
     this.form.goodId = Number(this.$route.params.id)
@@ -35,8 +30,7 @@ export default {
   methods: {
     async change_classify (value) {
       delete this.form.goodId
-      let { data: goods_data } = await Good_$get_page({ classifyId: value })
-      this.goods = goods_data.rows
+      this.$refs.AdminSelectGood.getGoods({ classifyId: value })
     },
     handleAddCard () {
       const Cards = this.getCardsArray(this.form)
