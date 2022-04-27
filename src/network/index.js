@@ -12,15 +12,17 @@ const Api = {
   get_baseApi: get_baseApi,
   card: card(request),
   order: order(request),
+  pageData: {},
   adminPage: function (props) {
     const { $delete, $get_page, $post, $put } = this.get_baseApi(props)
-    return {
+    const pageData = {
       count: 6,
       limit: 6,
       offset: 1,
       searchKey: '',
       isEdit: false,
       dialogVisible: false,
+      dialogTitle: '新建',
       row: {},
       rows: [],
       where: {},
@@ -30,19 +32,20 @@ const Api = {
         this.row = {}
       },
       handleEdit (index, row) {
-        console.log( row )
+        this.dialogTitle = '编辑'
         this.isEdit = true
         this.dialogVisible = true
         this.row = row
-       
+
       },
-      handleSearch () { },
+      handleSearch () {
+        this.getPage()
+      },
       async handleDelete (index, row) {
         let { data } = await $delete({ id: row.id })
         this.getPage()
       },
       async getPage () {
-        console.log(this)
         let { data } = await $get_page({ ...{ limit: this.limit, offset: this.offset, searchKey: this.searchKey }, ...this.where })
         this.rows = data.rows
         this.count = data.count
@@ -60,6 +63,8 @@ const Api = {
       },
 
     }
+    this.pageData = pageData
+    return pageData
   }
 }
 

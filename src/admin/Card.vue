@@ -4,44 +4,51 @@
       <AdminTopOper>
         <template #defaut>
           <AdminSelectClassify v-model="classifyId" @change="change_classify"> </AdminSelectClassify>
-          <AdminSelectGood v-model="goodId" @change="change_good" ref="AdminSelectGood"> </AdminSelectGood>
+          <AdminSelectGood v-model="goodId" @change="change_good"> </AdminSelectGood>
+          <el-date-picker v-model="date" @change="dateChange" type="datetimerange" range-separator="To" start-placeholder="Start date" end-placeholder="End date" />
           <el-button type="primary" icon="Search" @click="handleTakeCard()">提取卡密</el-button>
+          <el-button type="primary" icon="Search" @click="handleTakeCard()">复制卡密</el-button>
+          <el-button type="primary" icon="Search" @click="handleTakeCard()">导出卡密</el-button>
         </template>
       </AdminTopOper>
 
       <!-- 表格主体 -->
-      <el-table :data="adminPage.rows" @selection-change="handleSelectionChange">
+      <el-table :data="pageData.rows" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50" />
         <el-table-column prop="id" label="编号" width="80" />
-        <el-table-column prop="number" label="卡密信息" width="400" />
-        <AdminTableTagSwitch> </AdminTableTagSwitch>
+        <el-table-column prop="number" label="卡密信息" width="380" show-overflow-tooltip />
+        <el-table-column prop="status" label="销售状态" width="100">
+          <template #default="scope">
+            <el-tag :type="scope.row.status == 1 ? 'danger' : ''">{{ scope.row.is_sell == 1 ? '未使用' : '已售出' }}</el-tag>
+          </template>
+        </el-table-column>
         <!-- <AdminTableTagSwitch> </AdminTableTagSwitch> -->
-        <el-table-column prop="createdAt" label="创建时间" width="220" />
-        <AdminTableButton :baseCurd="baseCurd"> </AdminTableButton>
+        <el-table-column label="入库时间" width="165">
+          <template #default="scope">
+            <el-link type="primary" @click="Click_createdAt(scope.row.createdAt)">{{ scope.row.createdAt }}</el-link>
+          </template>
+        </el-table-column>
+        <AdminTableButton> </AdminTableButton>
       </el-table>
 
-      <AdminPagination :getPage="baseCurd.getPage"> </AdminPagination>
+      <AdminPagination> </AdminPagination>
     </el-card>
 
-    <AdminDialog @Confirm="baseCurd.create()">
+    <AdminDialog>
       <template #form>
         <el-form-item label="卡密信息">
-          <el-input v-model="adminPage.row.number"></el-input>
+          <el-input v-model="pageData.row.number"></el-input>
         </el-form-item>
-        <el-form-item label="排序">
-          <el-input v-model="adminPage.row.sort"></el-input>
-        </el-form-item>
-        <el-form-item label="排序">
-          <el-input v-model="adminPage.row.sort"></el-input>
+        <el-form-item label="优先出售">
+          <el-input v-model="pageData.row.sort"></el-input>
         </el-form-item>
       </template>
     </AdminDialog>
-    <!-- 提取卡密dialog -->
+
     <el-dialog v-model="is_dialogTakeCard" title="提取卡密" width="400px">
-      <el-form>
-        <el-form-item label="提取数量">
-          <el-input v-model="takeCardCount"></el-input>
-        </el-form-item>
+      <el-form ref="form" label-width="100px" size="default">
+        <el-form-item label="剩余卡密">{{ pageData.count }} </el-form-item>
+        <el-form-item label="提取数量"><el-input v-model="takeCardCount"></el-input> </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
@@ -54,96 +61,53 @@
 </template>
 
 <script setup >
-import { ref, onMounted } from 'vue'
-import Store from '@/store'
+import { ref, onMounted, reactive } from 'vue'
 import Api from '@/network'
+import Store from '@/store'
+const pageData = reactive(Api.adminPage('card'))
+onMounted(pageData.getPage())
 
-const adminPage = Store.state.adminPage
-const baseCurd = adminPage.curd(Api.get_baseApi('card'))
 let is_selection = false
-let takeCardCount = 1
+let takeCardCount = ref(1)
 let is_dialogTakeCard = ref(false)
 let classifyId = null
 let goodId = null
-
-onMounted(() => {
-  baseCurd.getPage()
-})
-
+let date = ref([])
 const handleSelectionChange = () => {
   //is_dialogTakeCard = true
 }
-const handleTakeCard = () => {
-  is_dialogTakeCard.value = true
+const handleTakeCard = () => is_dialogTakeCard.value = true
+const dateChange = (value) => {
+  pageData.where.createdAt = value
+  pageData.getPage()
+}
+const Click_createdAt = (value) => {
+
+  date.value = [value, value.slice(0,17) + '59']
+  dateChange(date)
 }
 const change_classify = (value) => {
   //is_dialogTakeCard.value = true
-  // $refs.AdminSelectGood.getGoods({ classifyId: value })
+  Store.state.AdminSelectGood({ classifyId: value })
 }
 const change_good = (value) => {
-  adminPage.where.goodId = value
-  baseCurd.getPage()
+  goodId = value
+  pageData.getPage()
 }
 const takeCard = () => {
   Api.order.takeCard({
-    count: takeCardCount || 10,
+    count: takeCardCount.value,
     goodId: goodId,
   })
 }
 </script>
 
 
-
-
-
-
-<style lang="less" >
-#card .el-checkbox {
-  height: 20px !important;
+<style lang="less"  scoped>
+#card {
+  max-width: 1050px;
+  .el-checkbox {
+    height: 20px !important;
+  }
 }
-// <script >
-// import Api from '@/network/index.js'
-// export default {
-//   data () {
-//     const adminPage = this.$store.state.adminPage
-//     const baseCurd = adminPage.curd(Api.get_baseApi('card'))
-//     return {
-//       adminPage: adminPage,
-//       baseCurd: baseCurd,
-//       is_selection: false,
-//       takeCardCount: 1,
-//       is_dialogTakeCard: false,
-//       classifyId: null,
-//       goodId: null,
-//     }
-//   },
-//   async created () {
-//     this.baseCurd.getPage()
-//   },
-//   methods: {
-//     handleSelectionChange (val) {
-
-//     },
-//     handleTakeCard () {
-//       this.is_dialogTakeCard = true
-//     },
-//     change_classify (value) {
-//       delete this.goodId
-//       this.$refs.AdminSelectGood.getGoods({ classifyId: value })
-
-//     },
-//     change_good (value) {
-//       this.adminPage.where.goodId = value
-//       this.baseCurd.getPage()
-//     },
-//     takeCard () {
-//       Api.order.takeCard({
-//         count: this.takeCardCount || 10,
-//         goodId: this.goodId,
-//       })
-//     }
-//   }
-
-// }
-// </script>
 </style>

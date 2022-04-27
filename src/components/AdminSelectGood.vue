@@ -7,6 +7,7 @@
 <script>
 import Api from '@/network/index.js'
 const { $get_page } = Api.get_baseApi('good')
+import Store from '@/store'
 export default {
   props: {
     modelValue: Number,
@@ -16,8 +17,10 @@ export default {
       goods: []
     }
   },
-  created () {
-    this.getGoods()
+  async created () {
+    await this.getGoods()
+    Store.state.AdminSelectGood = this.getGoods
+
   },
   methods: {
     async getGoods (where) {

@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
-
+import { ElMessage, ElNotification } from 'element-plus'
 
 export function request (config) {
     const instance = axios.create({
@@ -24,9 +23,10 @@ export function request (config) {
 // 统一展示信息
 function show_msg (res) {
     let { method } = res.config
-    let { msg, code } = res.data
+    let { msg, code, title, duration } = res.data
     if (method != 'get') {
+        if (code == 1000) return ElNotification({ message: msg, title, duration, type: 'success' })
+        if (code == 0 || code == null) return ElMessage({ message: msg, type: 'success' })
         if (code != 0) ElMessage({ message: msg, type: 'error' })
-        if (code == 0) ElMessage({ message: msg, type: 'success' })
     }
 }

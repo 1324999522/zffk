@@ -5,6 +5,7 @@
 </template>
 
 <script setup >
+
 import { defineEmits, defineProps, ref } from 'vue'
 import Api from '@/network'
 const props = defineProps({ modelValue: Number })

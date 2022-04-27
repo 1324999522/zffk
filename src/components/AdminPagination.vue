@@ -1,9 +1,9 @@
 <template>
   <el-pagination
     :page-sizes="[6, 10, 20, 50, 100]"
-    :page-size="adminPage.limit"
+    :page-size="pageData.limit"
     layout="total, sizes, prev, pager, next, jumper"
-    :total="adminPage.count"
+    :total="pageData.count"
     background
     hide-on-single-page
     @size-change="handleSizeChange"
@@ -14,15 +14,18 @@
 
 
 <script setup >
-const { adminPage } = defineProps({ adminPage: Object })
+import Api from '@/network'
+import { reactive } from 'vue'
+const pageData = reactive(Api.pageData)
+
 const $emit = defineEmits(['confirm', 'cancel'])
 const handleSizeChange = (val) => {
-  adminPage.limit = val
-  adminPage.getPage()
+  pageData.limit = val
+  pageData.getPage()
 }
 const handleCurrentChange = (val) => {
-  adminPage.offset = val
-  adminPage.getPage()
+  pageData.offset = val
+  pageData.getPage()
 }
 </script>
 

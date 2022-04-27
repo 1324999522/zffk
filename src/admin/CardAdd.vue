@@ -2,7 +2,7 @@
   <el-card class="cardAdd">
     <AdminSelectClassify v-model="form.classifyId" @change="change_classify"> </AdminSelectClassify>
 
-    <AdminSelectGood v-model="form.goodId" ref="AdminSelectGood"> </AdminSelectGood>
+    <AdminSelectGood v-model="form.goodId"> </AdminSelectGood>
 
     <el-input v-model="form.cards" :rows="15" type="textarea" placeholder="Please input" />
 
@@ -11,11 +11,12 @@
 </template>
 
 <script   >
+import Store from '@/store'
 import Api from '@/network/index.js'
 const { $get_page: Classify_$get_page } = Api.get_baseApi('classify')
 const { $get_page: Good_$get_page } = Api.get_baseApi('good')
+
 export default {
-  name: 'cardAdd',
   data () {
     return {
       form: {}
@@ -30,7 +31,7 @@ export default {
   methods: {
     async change_classify (value) {
       delete this.form.goodId
-      this.$refs.AdminSelectGood.getGoods({ classifyId: value })
+      Store.state.AdminSelectGood({ classifyId: value })
     },
     handleAddCard () {
       const Cards = this.getCardsArray(this.form)

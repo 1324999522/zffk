@@ -1,11 +1,11 @@
 
 <template >
-  <el-table-column label="操作" width="200">
+  <el-table-column label="操作" :width="width">
     <template #default="scope">
       <span class="AdminTableButton">
-        <el-button @click="adminPage.handleEdit(scope.$index, scope.row)" icon="Edit">编辑</el-button>
+        <el-button v-if="showEdit" @click="pageData.handleEdit(scope.$index, scope.row)" icon="Edit">编辑</el-button>
         <slot :row="scope.row" :index="scope.$index"></slot>
-        <el-popconfirm title="Are you sure to delete this?" @confirm="adminPage.handleDelete(scope.$index, scope.row)">
+        <el-popconfirm v-if="showDelete" title="Are you sure to delete this?" @confirm="pageData.handleDelete(scope.$index, scope.row)">
           <template #reference>
             <el-button type="danger" icon="Delete">删除</el-button>
           </template>
@@ -17,7 +17,15 @@
 
 
 <script setup >
-const props = defineProps({ adminPage: Object })
+import Api from '@/network'
+import { reactive } from 'vue'
+const pageData = reactive(Api.pageData)
+
+const props = defineProps({
+  showEdit: { type: Boolean, default: true },
+  showDelete: { type: Boolean, default: true },
+  width: { type: String, default: '200' },
+})
 </script>
 
 
