@@ -17,15 +17,15 @@ module.exports = {
       warnings: true,
       errors: true
     },
-    host: "localhost",
-    port: 8080, // 端口号
+    host: '192.168.1.6',//加入自
+    port: 8080,
     https: false, // https:{type:Boolean}
     open: false, //配置自动启动浏览器
     hotOnly: true, // 热更新
     // proxy: 'http://localhost:8080'   // 配置跨域处理,只有一个代理
     proxy: { //配置多个跨域
       "/api": {
-        target: "http://127.0.0.1:4200",
+        target: "http://192.168.1.6:4200",
         changeOrigin: true, //如果接口跨域，需要进行这个参数配置
         // ws: true,
         secure: false,// 如果是https接口，需要配置这个参数

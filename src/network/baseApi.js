@@ -14,7 +14,7 @@ export function get_baseApi (model_name) {
             return request({ url: `/${model_name}`, method: 'put', data: params })
         },
         $delete: function (params) {
-            return request({ url: `/${model_name}`, method: 'delete', data: params })
+            return request({ url: `/${model_name}`, method: 'delete', params: params })
         },
         $get_page: function (params) {
             return request({ url: `/${model_name}/page`, method: 'get', params: params })

@@ -1,8 +1,8 @@
 
 <template>
   <!-- 新建与编辑dialog -->
-  <el-dialog v-model="pageData.dialogVisible" :title="pageData.dialogTitle" width="400px">
-    <el-form ref="form" label-width="100px" size="default">
+  <el-dialog v-model="pageData.dialogVisible" :title="pageData.dialogTitle" width="400px" class="adminDialog" >
+    <el-form ref="form" label-width="100px" size="default" >
       <slot name="form"> </slot>
     </el-form>
 
@@ -23,6 +23,10 @@ const pageData = reactive(Api.pageData)
 
 
 </script>
+
+<style lang="less" >
+
+</style>
 
 
 

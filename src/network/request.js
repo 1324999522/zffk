@@ -24,7 +24,7 @@ export function request (config) {
 function show_msg (res) {
     let { method } = res.config
     let { msg, code, title, duration } = res.data
-    if (method != 'get') {
+    if (msg) {
         if (code == 1000) return ElNotification({ message: msg, title, duration, type: 'success' })
         if (code == 0 || code == null) return ElMessage({ message: msg, type: 'success' })
         if (code != 0) ElMessage({ message: msg, type: 'error' })

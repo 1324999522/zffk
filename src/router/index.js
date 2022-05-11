@@ -10,6 +10,7 @@ const router = createRouter({
   routes: [
     { path: '/', name: 'Home', component: () => import('@/views/Home.vue'), redirect: '/admin/classify' },
     { path: '/about', name: 'About', component: () => import('@/views/About.vue') },
+    { path: '/client', name: 'About', component: () => import('@/views/Client.vue') },
     { path: '/admin', name: 'Admin', component: () => import('@/admin/layouts/base_layout.vue'), redirect: '/admin/classify', children: adminRoutes, },
   ]
 })

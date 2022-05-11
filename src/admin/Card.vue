@@ -1,14 +1,19 @@
 <template>
   <div id="card">
     <el-card>
-      <AdminTopOper>
+      <AdminTopOper placeholder='请输入订单号或卡密'>
         <template #defaut>
-          <AdminSelectClassify v-model="classifyId" @change="change_classify"> </AdminSelectClassify>
-          <AdminSelectGood v-model="goodId" @change="change_good"> </AdminSelectGood>
+          <AdminSelectClassify v-model="pageData.where.classifyId" @change="change_classify"> </AdminSelectClassify>
+          <AdminSelectGood v-model="pageData.where.goodId" @change="change_good"> </AdminSelectGood>
+          <el-radio-group v-model="pageData.where.is_sell" @change="pageData.getPage()">
+            <el-radio-button label="已售出" />
+            <el-radio-button label="未使用" />
+          </el-radio-group>
+
           <el-date-picker v-model="date" @change="dateChange" type="datetimerange" range-separator="To" start-placeholder="Start date" end-placeholder="End date" />
-          <el-button type="primary" icon="Search" @click="handleTakeCard()">提取卡密</el-button>
-          <el-button type="primary" icon="Search" @click="handleTakeCard()">复制卡密</el-button>
-          <el-button type="primary" icon="Search" @click="handleTakeCard()">导出卡密</el-button>
+          <el-button type="primary" @click="handleTakeCard()">提取卡密</el-button>
+          <el-button type="primary" @click="handleTakeCard()">复制选中</el-button>
+          <el-button type="primary" @click="handleTakeCard()">导出卡密</el-button>
         </template>
       </AdminTopOper>
 
@@ -19,7 +24,7 @@
         <el-table-column prop="number" label="卡密信息" width="380" show-overflow-tooltip />
         <el-table-column prop="status" label="销售状态" width="100">
           <template #default="scope">
-            <el-tag :type="scope.row.status == 1 ? 'danger' : ''">{{ scope.row.is_sell == 1 ? '未使用' : '已售出' }}</el-tag>
+            <el-tag :type="scope.row.is_sell == 1 ? 'danger' : 'success'">{{ scope.row.is_sell == 1 ? '已售出' : '未使用' }}</el-tag>
           </template>
         </el-table-column>
         <!-- <AdminTableTagSwitch> </AdminTableTagSwitch> -->
@@ -64,14 +69,28 @@
 import { ref, onMounted, reactive } from 'vue'
 import Api from '@/network'
 import Store from '@/store'
+import { useRoute } from 'vue-router'
 const pageData = reactive(Api.adminPage('card'))
-onMounted(pageData.getPage())
+const route = useRoute()
 
+pageData.where.is_sell = '未使用'
+
+
+
+onMounted(() => {
+  let { orderName, classifyId, goodId } = route.params
+  if (orderName) {
+    pageData.searchKey = orderName
+    pageData.where.is_sell = '已售出'
+  }
+  if (goodId) pageData.where.goodId = Number(goodId)
+  if (goodId) pageData.where.classifyId = Number(classifyId)
+
+  pageData.getPage()
+})
 let is_selection = false
 let takeCardCount = ref(1)
 let is_dialogTakeCard = ref(false)
-let classifyId = null
-let goodId = null
 let date = ref([])
 const handleSelectionChange = () => {
   //is_dialogTakeCard = true
@@ -83,7 +102,7 @@ const dateChange = (value) => {
 }
 const Click_createdAt = (value) => {
 
-  date.value = [value, value.slice(0,17) + '59']
+  date.value = [value, value.slice(0, 17) + '59']
   dateChange(date)
 }
 const change_classify = (value) => {
@@ -91,13 +110,13 @@ const change_classify = (value) => {
   Store.state.AdminSelectGood({ classifyId: value })
 }
 const change_good = (value) => {
-  goodId = value
+  pageData.where.goodId = value
   pageData.getPage()
 }
 const takeCard = () => {
   Api.order.takeCard({
     count: takeCardCount.value,
-    goodId: goodId,
+    goodId: pageData.where.goodId,
   })
 }
 </script>
